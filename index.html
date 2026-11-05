@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Canciones con acordes, cambio de tono y alabanzas en PowerPoint.">
+<meta name="theme-color" content="#232f42">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="El Carmen">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest?v=a080e8a83c">
+<link rel="icon" type="image/png" sizes="32x32" href="iconos/favicon-32.png?v=a298928eb0">
+<link rel="apple-touch-icon" href="iconos/apple-touch-icon.png?v=43138338ba">
+<title>Alabanza El Carmen</title>
+<link rel="stylesheet" href="estilos.css?v=96e9a24675">
+</head>
+<body>
+<header class="cabecera">
+  <div class="cabecera-in">
+    <a class="marca" href="#canciones">Alabanza El Carmen</a>
+    <nav class="pestanas" aria-label="Secciones">
+      <a href="#canciones" id="tab-canciones">Canciones</a>
+      <a href="#crear" id="tab-crear">Crear alabanza <span class="cuenta" id="cuenta-crear" hidden></span></a>
+      <a href="#anteriores" id="tab-anteriores"><span class="largo">Alabanzas anteriores</span><span class="corto">Anteriores</span></a>
+    </nav>
+    <div class="notacion grupo" role="group" aria-label="Nombre de los acordes">
+      <button type="button" data-notacion="solfeo">Do Re Mi</button><button type="button" data-notacion="letras">C D E</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- CANCIONES (principal) -->
+  <section id="panel-canciones" class="panel canciones" aria-label="Canciones">
+    <aside class="indice-lateral" id="lateral">
+      <div class="buscador-cab">
+        <label class="busqueda">
+          <span class="oculto">Buscar canciones</span>
+          <svg aria-hidden="true" viewBox="0 0 20 20" width="18" height="18"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input id="can-q" type="search" autocomplete="off" placeholder="Buscar por título o por letra" aria-controls="can-lista">
+        </label>
+        <div class="filtros-fila">
+          <div class="grupo ambito" role="group" aria-label="Qué canciones" data-para="can">
+            <button type="button" data-ambito="mias">Mis canciones</button><button type="button" data-ambito="todas">Todas</button>
+          </div>
+          <span class="contador" id="can-contador" aria-live="polite"></span>
+        </div>
+        <div class="chips" id="can-chips" role="group" aria-label="Tipo de canción"></div>
+      </div>
+      <nav class="lista-canciones" id="can-lista" aria-label="Índice de canciones"></nav>
+    </aside>
+
+    <article class="visor" id="visor" aria-live="polite"></article>
+  </section>
+
+  <!-- CREAR -->
+  <section id="panel-crear" class="panel crear" aria-label="Crear alabanza" hidden>
+    <div class="selector">
+      <div class="buscador-cab">
+        <label class="busqueda">
+          <span class="oculto">Buscar canciones para añadir</span>
+          <svg aria-hidden="true" viewBox="0 0 20 20" width="18" height="18"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input id="crear-q" type="search" autocomplete="off" placeholder="Buscar por título o por letra" aria-controls="crear-lista">
+        </label>
+        <div class="filtros-fila">
+          <div class="grupo ambito" role="group" aria-label="Qué canciones" data-para="crear">
+            <button type="button" data-ambito="mias">Mis canciones</button><button type="button" data-ambito="todas">Todas</button>
+          </div>
+          <span class="contador" id="crear-contador" aria-live="polite"></span>
+        </div>
+        <div class="chips" id="crear-chips" role="group" aria-label="Tipo de canción"></div>
+      </div>
+      <div class="lista-canciones con-boton" id="crear-lista"></div>
+    </div>
+
+    <aside class="alabanza" aria-labelledby="alabanza-titulo">
+      <div class="editando" id="editando" hidden>
+        <span id="editando-texto"></span>
+        <button type="button" class="enlace" id="como-nueva">Guardar como nueva</button>
+      </div>
+      <h2 id="alabanza-titulo" class="oculto">Nueva alabanza</h2>
+      <div class="alabanza-datos">
+        <label class="campo crece"><span>Nombre</span><input id="nombre" type="text" maxlength="80" value="Alabanza"></label>
+        <label class="campo"><span>Fecha</span><input id="fecha" type="date"></label>
+      </div>
+      <ol class="orden" id="orden"></ol>
+      <p class="vacio" id="orden-vacio">Añade canciones desde la lista o desde la pestaña Canciones. Luego arrástralas o usa las flechas para ordenarlas.</p>
+      <fieldset class="opciones">
+        <legend>PowerPoint</legend>
+        <label><input type="checkbox" id="op-portada" checked> Portada al principio</label>
+        <label><input type="checkbox" id="op-titulos"> Una diapositiva con el título antes de cada canción</label>
+        <label><input type="checkbox" id="op-repetir"> Repetir el estribillo cada vez que se canta</label>
+        <label class="tamano">Tamaño de la letra
+          <select id="op-tamano">
+            <option value="40">40 (pantalla grande o sala pequeña)</option>
+            <option value="44">44</option>
+            <option value="48">48 (recomendado)</option>
+            <option value="54">54</option>
+            <option value="60">60 (pantalla pequeña y lejos)</option>
+          </select></label>
+      </fieldset>
+      <div class="acciones">
+        <button type="button" class="principal" id="crear">Crear alabanza</button>
+        <button type="button" class="secundario" id="vaciar">Vaciar</button>
+      </div>
+      <div class="resultado" id="resultado" hidden aria-live="polite"></div>
+    </aside>
+  </section>
+
+  <!-- ANTERIORES -->
+  <section id="panel-anteriores" class="panel" aria-label="Alabanzas anteriores" hidden>
+    <div class="anteriores-cab">
+      <h2>Alabanzas anteriores</h2>
+      <label class="busqueda pequena"><span class="oculto">Buscar alabanzas</span>
+        <svg aria-hidden="true" viewBox="0 0 20 20" width="16" height="16"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="ant-buscar" type="search" placeholder="Nombre o canción"></label>
+    </div>
+    <ul class="historial" id="historial"></ul>
+  </section>
+</main>
+
+<dialog id="vista" aria-labelledby="vista-titulo">
+  <div class="vista-cab">
+    <h2 id="vista-titulo"></h2>
+    <button type="button" class="cerrar" id="vista-cerrar" aria-label="Cerrar">✕</button>
+  </div>
+  <div class="vista-meta meta" id="vista-meta"></div>
+  <div class="cancion-cuerpo" id="vista-cuerpo"></div>
+  <div class="vista-pie"><button type="button" class="principal" id="vista-anadir">Añadir a la alabanza</button></div>
+</dialog>
+
+<div class="aviso" id="aviso" role="status" hidden></div>
+
+<script src="datos.js?v=2ef591cbb4"></script>
+<script src="plantilla.js?v=bc2590ca72"></script>
+<script src="programa.js?v=9c0b9bf5ca"></script>
+</body>
+</html>

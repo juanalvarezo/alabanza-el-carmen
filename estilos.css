@@ -1,0 +1,300 @@
+/* Pintado de una canción (compartido por la aplicación y los cancioneros HTML). */
+:root {
+  --c-acorde: #b4530a;
+  --c-etiqueta: #6b7280;
+  --c-letra: inherit;
+  --f-mono: "Cascadia Mono", Consolas, "SF Mono", Menlo, "DejaVu Sans Mono", "Liberation Mono", monospace;
+  --t-cancion: 16px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --c-acorde: #f2b45a; --c-etiqueta: #9aa3b2; }
+}
+:root[data-theme="dark"] { --c-acorde: #f2b45a; --c-etiqueta: #9aa3b2; }
+
+.cancion-cuerpo { font-family: var(--f-mono); font-size: var(--t-cancion); line-height: 1.35; overflow-x: auto; }
+.cancion-cuerpo .estrofa { margin: 0 0 1em; break-inside: avoid; }
+.cancion-cuerpo .l { white-space: pre; min-height: 1.35em; }
+.cancion-cuerpo .ac { color: var(--c-acorde); font-weight: 700; }
+.cancion-cuerpo .le { color: var(--c-letra); }
+.cancion-cuerpo .le.b { font-weight: 700; }
+.cancion-cuerpo .et { color: var(--c-etiqueta); font-style: italic; }
+.sin-acordes .cancion-cuerpo .ac { display: none; }
+
+:root {
+  --noche: #232f42;        /* fondo de las diapositivas */
+  --noche-2: #2e3c54;
+  --vidriera: #e0962b;     /* ámbar de la paloma */
+  --vidriera-osc: #b4530a;
+  --vidriera-suave: rgba(224, 150, 43, .14);
+  --fondo: #f3f5f8;
+  --papel: #ffffff;
+  --tinta: #1b2433;
+  --suave: #5e6a7d;
+  --linea: #dadfe7;
+  --peligro: #b42318;
+  --f-ui: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --radio: 8px;
+  --alto-cab: 52px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fondo: #121722; --papel: #1a2130; --tinta: #e8eaee; --suave: #a3abb9; --linea: #2b3446;
+    --peligro: #f97066; --vidriera-suave: rgba(224, 150, 43, .18); color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 16px; }
+body { margin: 0; background: var(--fondo); color: var(--tinta); font: 15px/1.45 var(--f-ui); }
+button, input, select { font: inherit; color: inherit; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--vidriera); outline-offset: 2px; }
+.oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+[hidden] { display: none !important; }
+code { font-size: .92em; }
+mark { background: var(--vidriera-suave); color: inherit; border-radius: 2px; box-shadow: 0 1px 0 var(--vidriera); }
+
+/* ------------------------------------------------------------ cabecera */
+.cabecera { background: var(--noche); color: #fff; }
+.cabecera-in { max-width: 1320px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; min-height: var(--alto-cab); }
+.marca { font-size: 17px; font-weight: 600; text-decoration: none; letter-spacing: .01em; padding: 14px 0; }
+.pestanas { display: flex; gap: 2px; flex: 1; }
+.pestanas a { color: rgba(255,255,255,.72); text-decoration: none; padding: 15px 14px 12px; border-bottom: 3px solid transparent; white-space: nowrap; }
+.pestanas a:hover { color: #fff; }
+.pestanas a[aria-current="page"] { color: #fff; border-bottom-color: var(--vidriera); }
+.cuenta { display: inline-block; min-width: 20px; padding: 0 6px; margin-left: 4px; border-radius: 10px; background: var(--vidriera); color: #1b1203; font-size: 12px; font-weight: 700; text-align: center; line-height: 20px; }
+.cabecera .grupo { border-color: rgba(255,255,255,.25); }
+.cabecera .grupo button { background: transparent; color: rgba(255,255,255,.8); }
+.cabecera .grupo button[aria-pressed="true"] { background: rgba(255,255,255,.16); color: #fff; }
+
+/* ------------------------------------------------------------ controles */
+.grupo { display: inline-flex; border: 1px solid var(--linea); border-radius: var(--radio); overflow: hidden; vertical-align: middle; }
+.grupo button { border: 0; background: var(--papel); padding: 5px 10px; cursor: pointer; font-size: 14px; }
+.grupo button + button { border-left: 1px solid var(--linea); }
+.grupo button[aria-pressed="true"] { background: var(--noche); color: #fff; }
+.campo { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--suave); }
+.campo.crece { flex: 1; min-width: 160px; }
+.campo input, .campo select { color: var(--tinta); background: var(--papel); border: 1px solid var(--linea); border-radius: var(--radio); padding: 8px 10px; font-size: 15px; }
+.principal { background: var(--vidriera); color: #1b1203; border: 0; border-radius: var(--radio); padding: 9px 16px; font-weight: 600; cursor: pointer; }
+.principal:hover { filter: brightness(1.06); }
+.principal:disabled { opacity: .55; cursor: default; }
+.secundario { background: transparent; border: 1px solid var(--linea); border-radius: var(--radio); padding: 8px 14px; cursor: pointer; }
+.secundario:disabled { opacity: .55; cursor: default; }
+.enlace { background: none; border: 0; padding: 0; color: inherit; text-decoration: underline; cursor: pointer; }
+.icono { background: none; border: 1px solid transparent; border-radius: 6px; width: 30px; height: 30px; cursor: pointer; display: inline-grid; place-items: center; }
+.icono:hover { border-color: currentColor; }
+.icono:disabled { opacity: .3; cursor: default; border-color: transparent; }
+
+main { max-width: 1320px; margin: 0 auto; padding: 20px 16px 40px; }
+
+/* ------------------------------------------------------------ buscador */
+.busqueda { display: flex; align-items: center; gap: 8px; background: var(--papel); border: 1px solid var(--linea); border-radius: 10px; padding: 0 12px; color: var(--suave); }
+.busqueda:focus-within { border-color: var(--vidriera); box-shadow: 0 0 0 3px var(--vidriera-suave); }
+.busqueda input { flex: 1; min-width: 0; border: 0; background: transparent; padding: 11px 0; font-size: 16px; color: var(--tinta); outline: none; }
+.busqueda.pequena input { padding: 8px 0; font-size: 15px; }
+.filtros-fila { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 10px 0 8px; }
+.contador { color: var(--suave); font-size: 13px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.chip { border: 1px solid var(--linea); background: var(--papel); border-radius: 999px; padding: 4px 11px; font-size: 13px; cursor: pointer; }
+.chip .num { color: var(--suave); font-variant-numeric: tabular-nums; margin-left: 2px; }
+.chip[aria-pressed="true"] { background: var(--noche); border-color: var(--noche); color: #fff; }
+.chip[aria-pressed="true"] .num { color: rgba(255,255,255,.7); }
+
+.lista-canciones { background: var(--papel); border: 1px solid var(--linea); border-radius: var(--radio); overflow: auto; }
+.grupo-tipo + .grupo-tipo { border-top: 1px solid var(--linea); }
+.cab-tipo { position: sticky; top: 0; z-index: 1; margin: 0; display: flex; justify-content: space-between; background: var(--fondo); color: var(--tinta); font-size: 13px; font-weight: 700; padding: 7px 12px; border-bottom: 1px solid var(--linea); }
+.cab-tipo .num { color: var(--suave); font-weight: 400; font-variant-numeric: tabular-nums; }
+.lista-canciones .item { display: block; text-decoration: none; padding: 8px 12px 8px 14px; border-left: 3px solid transparent; }
+.lista-canciones .item + .item { border-top: 1px solid color-mix(in srgb, var(--linea) 60%, transparent); }
+.lista-canciones a.item:hover, .lista-canciones .item.activo { background: var(--vidriera-suave); }
+.lista-canciones .item[aria-current="true"] { border-left-color: var(--vidriera); background: var(--vidriera-suave); font-weight: 600; }
+.lista-canciones .t { display: block; }
+.lista-canciones .frag { display: block; color: var(--suave); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 400; }
+.lista-canciones .vacio { padding: 14px; margin: 0; }
+.insignia { font-size: 11.5px; color: var(--suave); border: 1px solid var(--linea); border-radius: 4px; padding: 0 5px; margin-left: 6px; font-weight: 400; white-space: nowrap; vertical-align: 1px; }
+.aviso-insignia { color: var(--vidriera-osc); }
+.en-alabanza { color: var(--vidriera); margin-left: 6px; font-size: 11px; vertical-align: 1px; }
+.con-boton .item { display: flex; align-items: center; gap: 8px; padding: 0 10px 0 0; }
+.con-boton .abrir { flex: 1; min-width: 0; text-align: left; background: none; border: 0; padding: 8px 12px; cursor: pointer; }
+.con-boton .abrir:hover { background: var(--vidriera-suave); }
+.con-boton .anadir { flex: none; padding: 5px 12px; }
+
+/* --------------------------------------------------- canciones (principal) */
+.panel.canciones { display: grid; grid-template-columns: minmax(280px, 360px) minmax(0, 1fr); gap: 24px; align-items: start; }
+.indice-lateral { position: sticky; top: 12px; display: flex; flex-direction: column; max-height: calc(100vh - 24px); }
+.indice-lateral .lista-canciones { flex: 1; min-height: 120px; }
+.visor { background: var(--papel); border: 1px solid var(--linea); border-radius: 12px; padding: 20px 24px 16px; min-height: 60vh; }
+.visor h2 { margin: 2px 0 6px; font-size: 26px; line-height: 1.2; }
+.visor .volver { font-size: 14px; color: var(--suave); text-decoration: none; }
+.visor .volver::before { content: "‹ "; }
+.visor .volver:hover { color: var(--tinta); }
+.meta { color: var(--suave); font-size: 14px; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; margin: 4px 0 14px; }
+.tipo-insignia { margin-left: 0; text-decoration: none; font-size: 13px; padding: 1px 8px; }
+.tipo-insignia:hover { border-color: var(--vidriera); }
+.controles { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 10px 0 14px; border-bottom: 1px solid var(--linea); margin-bottom: 16px; }
+.controles .principal, .controles .secundario { margin-left: auto; }
+.tono-actual { min-width: 92px; }
+.controles select.cejilla { background: var(--papel); border: 1px solid var(--linea); border-radius: var(--radio); padding: 5px 8px; font-size: 14px; cursor: pointer; }
+.controles .suena { color: var(--suave); font-size: 14px; }
+.controles .guardar-habitual { margin-left: 0; border-color: var(--vidriera); }
+.pasar { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--linea); }
+.pasar a { text-decoration: none; border: 1px solid var(--linea); border-radius: var(--radio); padding: 8px 12px; }
+.pasar a:hover { border-color: var(--vidriera); }
+.pasar small { display: block; color: var(--suave); font-size: 12px; }
+.pasar .sig { text-align: right; }
+
+/* índice general */
+.ig-cab h2 { margin: 0; font-size: 28px; }
+.ig-cab p { margin: 4px 0 12px; color: var(--suave); }
+.saltos { display: flex; flex-wrap: wrap; gap: 6px 16px; padding-bottom: 14px; border-bottom: 1px solid var(--linea); margin-bottom: 8px; }
+.saltos a { color: var(--tinta); font-weight: 600; text-decoration-color: var(--vidriera); text-underline-offset: 3px; }
+.ig-grupo { padding: 14px 0 6px; }
+.ig-grupo h3 { margin: 0 0 8px; font-size: 18px; display: flex; gap: 8px; align-items: baseline; }
+.ig-grupo h3 .num { color: var(--suave); font-size: 14px; font-weight: 400; }
+.ig-grupo ol { columns: 3 220px; column-gap: 28px; margin: 0; padding: 0; list-style: none; }
+.ig-grupo li { break-inside: avoid; padding: 3px 0; }
+.ig-grupo li a { text-decoration: none; }
+.ig-grupo li a:hover { text-decoration: underline; text-decoration-color: var(--vidriera); text-underline-offset: 3px; }
+.actualizar { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--linea); font-size: 14px; color: var(--suave); }
+.actualizar h3 { margin: 0 0 4px; color: var(--tinta); font-size: 16px; }
+.actualizar p { margin: 0 0 8px; }
+.actualizar label { display: block; margin-bottom: 8px; }
+.log { background: var(--fondo); border: 1px solid var(--linea); border-radius: var(--radio); padding: 10px; white-space: pre-wrap; font-size: 12px; max-height: 260px; overflow: auto; color: var(--tinta); }
+
+/* ------------------------------------------------------------ crear */
+.panel.crear { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 460px); gap: 24px; align-items: start; }
+.selector .lista-canciones { max-height: calc(100vh - 250px); }
+.alabanza { background: var(--noche); color: #fff; border-radius: 12px; padding: 18px; position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow: auto; }
+.alabanza .campo span { color: rgba(255,255,255,.7); }
+.alabanza .campo input { background: var(--noche-2); border-color: rgba(255,255,255,.18); color: #fff; color-scheme: dark; }
+.alabanza-datos { display: flex; gap: 10px; flex-wrap: wrap; }
+.editando { background: rgba(224,150,43,.18); border: 1px solid rgba(224,150,43,.5); border-radius: var(--radio); padding: 8px 10px; margin-bottom: 12px; font-size: 14px; display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap; }
+.orden { list-style: none; margin: 14px 0 0; padding: 0; counter-reset: n; }
+.orden li { counter-increment: n; display: flex; align-items: center; gap: 8px; padding: 8px 6px 8px 0; border-top: 1px solid rgba(255,255,255,.12); cursor: grab; text-transform: uppercase; font-size: 14px; letter-spacing: .01em; }
+.orden li::before { content: counter(n); width: 26px; text-align: right; color: rgba(255,255,255,.5); font-variant-numeric: tabular-nums; flex: none; }
+.orden li.arrastrando { opacity: .4; }
+.orden li.encima { box-shadow: inset 0 3px 0 var(--vidriera); }
+.orden .titulo { flex: 1; min-width: 0; }
+.orden .titulo small { display: block; text-transform: none; color: rgba(255,255,255,.6); font-size: 12px; letter-spacing: 0; }
+.orden .tono { display: inline-flex; align-items: center; gap: 2px; text-transform: none; font-size: 12px; color: rgba(255,255,255,.8); }
+.orden .tono span { min-width: 54px; text-align: center; }
+.orden select.cej { margin-left: 4px; background: var(--noche-2); color: #fff; border: 1px solid rgba(255,255,255,.25); border-radius: 6px; padding: 2px 4px; font-size: 12px; color-scheme: dark; cursor: pointer; }
+.orden .icono { color: rgba(255,255,255,.75); width: 26px; height: 26px; }
+.orden .icono:hover { color: #fff; }
+.vacio { color: var(--suave); }
+.alabanza .vacio { color: rgba(255,255,255,.65); font-size: 14px; margin: 18px 0; }
+.opciones { border: 1px solid rgba(255,255,255,.18); border-radius: var(--radio); margin: 16px 0 0; padding: 8px 12px 10px; display: grid; gap: 4px; font-size: 14px; }
+.opciones legend { color: rgba(255,255,255,.7); font-size: 13px; padding: 0 4px; }
+.opciones input { accent-color: var(--vidriera); margin-right: 6px; }
+.opciones .tamano { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.opciones select { background: var(--noche-2); color: #fff; border: 1px solid rgba(255,255,255,.25); border-radius: 6px; padding: 4px 6px; color-scheme: dark; }
+.acciones { display: flex; gap: 10px; margin-top: 16px; }
+.alabanza .secundario { border-color: rgba(255,255,255,.3); color: #fff; }
+.resultado { margin-top: 14px; background: var(--noche-2); border-radius: var(--radio); padding: 12px; font-size: 14px; }
+.resultado .botones, .historial .botones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.resultado a, .historial a { display: inline-block; text-decoration: none; border-radius: var(--radio); padding: 7px 12px; font-size: 14px; }
+.resultado a { background: rgba(255,255,255,.1); color: #fff; }
+.resultado a.fuerte { background: var(--vidriera); color: #1b1203; font-weight: 600; }
+.error { color: #ffb4a8; }
+
+/* ------------------------------------------------------------ anteriores */
+.anteriores-cab { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+.anteriores-cab h2 { margin: 0; font-size: 22px; }
+.historial { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.historial > li { background: var(--papel); border: 1px solid var(--linea); border-radius: var(--radio); padding: 14px 16px; display: grid; grid-template-columns: 96px 1fr; gap: 14px; }
+.historial > li.sin-borde { display: block; background: none; border: 0; padding: 0; }
+.historial .dia { background: var(--noche); color: #fff; border-radius: 6px; text-align: center; padding: 8px 4px; align-self: start; }
+.historial .dia b { display: block; font-size: 26px; line-height: 1.1; }
+.historial .dia span { font-size: 12px; opacity: .8; }
+.historial h3 { margin: 0; font-size: 17px; }
+.historial .canciones-lista { color: var(--suave); font-size: 14px; margin: 4px 0 0; }
+.historial a { border: 1px solid var(--linea); color: var(--tinta); }
+.historial a.fuerte { background: var(--noche); border-color: var(--noche); color: #fff; }
+.historial button.secundario { padding: 6px 12px; font-size: 14px; }
+.historial button.borrar { color: var(--peligro); border-color: transparent; }
+
+/* ------------------------------------------------------------ diálogo */
+dialog { width: min(760px, calc(100vw - 32px)); max-height: calc(100vh - 48px); background: var(--papel); color: var(--tinta); border: 1px solid var(--linea); border-radius: 12px; padding: 0; }
+dialog::backdrop { background: rgba(18, 23, 34, .55); }
+.vista-cab { display: flex; justify-content: space-between; align-items: start; gap: 12px; padding: 16px 18px 0; }
+.vista-cab h2 { margin: 0; font-size: 21px; }
+.vista-meta { padding: 0 18px; }
+#vista-cuerpo { padding: 0 18px; max-height: 58vh; overflow: auto; }
+.vista-pie { padding: 12px 18px 16px; border-top: 1px solid var(--linea); display: flex; justify-content: flex-end; }
+.cerrar { background: none; border: 0; font-size: 18px; cursor: pointer; padding: 4px 8px; color: var(--suave); }
+
+.aviso { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--noche); color: #fff; padding: 10px 16px; border-radius: var(--radio); box-shadow: 0 6px 20px rgba(0,0,0,.25); z-index: 20; max-width: calc(100vw - 32px); }
+
+/* ------------------------------------------------------------ móvil */
+@media (max-width: 880px) {
+  .panel.canciones, .panel.crear { grid-template-columns: minmax(0, 1fr); }
+  .indice-lateral, .alabanza { position: static; max-height: none; }
+  .indice-lateral .lista-canciones { max-height: none; overflow: visible; }
+  .selector .lista-canciones { max-height: 55vh; }
+  .panel.canciones.con-cancion .indice-lateral { display: none; }
+  .panel.canciones:not(.con-cancion) .visor { display: none; }
+  .visor { padding: 14px 14px 12px; }
+  .visor h2 { font-size: 22px; }
+  .controles .principal, .controles .secundario { margin-left: 0; }
+}
+@media (max-width: 640px) {
+  .cabecera-in { gap: 0 12px; }
+  .marca { flex: 1; }
+  .pestanas { order: 3; flex-basis: 100%; overflow-x: auto; }
+  .pestanas a { padding: 10px 8px 9px; font-size: 14px; }
+  .historial > li { grid-template-columns: 1fr; }
+  .historial .dia { justify-self: start; padding: 6px 12px; }
+  .pasar { grid-template-columns: 1fr; }
+  .pasar .sig { text-align: left; }
+  .orden li { flex-wrap: wrap; row-gap: 4px; }
+  .orden .titulo { flex-basis: calc(100% - 40px); }
+  .orden .tono { margin-left: 30px; margin-right: auto; }
+  .orden .tono span { min-width: 40px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Versión web: solo «Mis canciones» (sin el selector Mis canciones / Todas) y piezas propias de la web. */
+.ambito { display: none !important; }
+
+/* barra de avisos (navegador de otra app, instalar) */
+.barra-web { background: var(--vidriera-suave); border-bottom: 1px solid var(--linea); color: var(--tinta); font-size: 14px; }
+.barra-web.fuerte { background: #fff4e0; color: #3d2600; }
+.barra-in { max-width: 1320px; margin: 0 auto; padding: 8px 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.barra-in span { flex: 1 1 220px; line-height: 1.35; }
+.barra-in .principal { text-decoration: none; padding: 7px 14px; }
+.barra-cerrar { background: none; border: 0; color: inherit; opacity: .6; font-size: 16px; cursor: pointer; padding: 4px 6px; margin-left: auto; }
+
+
+/* cancionero dentro de la app */
+.capa-cancionero { position: fixed; inset: 0; z-index: 30; display: flex; flex-direction: column; background: var(--papel); }
+.capa-barra { display: flex; align-items: center; gap: 8px; padding: 8px 12px; padding-top: max(8px, env(safe-area-inset-top)); background: var(--noche); color: #fff; }
+.capa-barra button { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.3); border-radius: var(--radio); padding: 7px 12px; font: inherit; font-size: 14px; cursor: pointer; }
+.capa-barra .capa-volver { border-color: transparent; padding-left: 4px; }
+.capa-titulo { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.capa-cancionero iframe { flex: 1; width: 100%; border: 0; background: #fff; }
+html.con-capa, html.con-capa body { overflow: hidden; }
+
+/* ayuda para descargar desde el navegador de otra app */
+.ayuda-descarga { width: min(440px, calc(100vw - 32px)); }
+.ayuda-in { padding: 18px; }
+.ayuda-in h2 { margin: 0 0 8px; font-size: 19px; }
+.ayuda-in p { margin: 0 0 14px; line-height: 1.45; }
+.ayuda-botones { display: flex; flex-direction: column; gap: 8px; }
+.ayuda-botones .principal, .ayuda-botones .secundario { text-align: center; text-decoration: none; padding: 11px 14px; font: inherit; color: inherit; }
+.ayuda-botones .principal { color: #1b1203; }
+.ayuda-botones .enlace { align-self: center; }
+
+/* pestañas: en pantalla estrecha, «Anteriores» para que quepan las tres */
+.pestanas .corto { display: none; }
+@media (max-width: 480px) {
+  .pestanas .largo { display: none; }
+  .pestanas .corto { display: inline; }
+  .pestanas { gap: 0; justify-content: space-between; }
+}
+
+/* Crear alabanza en el móvil: botón flotante para bajar a la alabanza en preparación */
+.ir-alabanza { position: fixed; left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 15;
+  background: var(--noche); color: #fff; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: 10px 18px;
+  font: inherit; font-weight: 600; box-shadow: 0 6px 20px rgba(0,0,0,.25); cursor: pointer; white-space: nowrap; }
+.ir-alabanza[hidden] { display: none; }
+@media (min-width: 881px) { .ir-alabanza { display: none; } }
