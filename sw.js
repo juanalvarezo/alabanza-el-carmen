@@ -1,9 +1,9 @@
 /* Service worker del cancionero web: guarda la app y las canciones para usarla sin conexión.
    La página se pide primero a internet (para tener siempre la última versión) y, si no hay conexión
    o tarda, sale de lo guardado. El resto de archivos llevan su versión en el nombre (?v=…). */
-const VERSION = "5c1fe6e9d9";
+const VERSION = "c701d33475";
 const CACHE = "cancionero-" + VERSION;
-const ARCHIVOS = ["./", "datos.js?v=2ef591cbb4", "estilos.css?v=96e9a24675", "iconos/apple-touch-icon.png?v=43138338ba", "iconos/favicon-32.png?v=a298928eb0", "iconos/icono-192.png?v=3bc1518b1d", "iconos/icono-512.png?v=ec2d584d59", "iconos/icono-maskable-512.png?v=3715363036", "manifest.webmanifest?v=a080e8a83c", "plantilla.js?v=bc2590ca72", "programa.js?v=9c0b9bf5ca"];
+const ARCHIVOS = ["./", "datos.js?v=acceead6a8", "estilos.css?v=96e9a24675", "iconos/apple-touch-icon.png?v=43138338ba", "iconos/favicon-32.png?v=a298928eb0", "iconos/icono-192.png?v=3bc1518b1d", "iconos/icono-512.png?v=ec2d584d59", "iconos/icono-maskable-512.png?v=3715363036", "manifest.webmanifest?v=a080e8a83c", "plantilla.js?v=bc2590ca72", "programa.js?v=9c0b9bf5ca"];
 
 self.addEventListener("install", (ev) => {
   ev.waitUntil(caches.open(CACHE).then((c) => c.addAll(ARCHIVOS)).then(() => self.skipWaiting()));
