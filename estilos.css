@@ -256,7 +256,7 @@ dialog::backdrop { background: rgba(18, 23, 34, .55); }
 /* Versión web: solo «Mis canciones» (sin el selector Mis canciones / Todas) y piezas propias de la web. */
 .ambito { display: none !important; }
 
-/* barra de avisos (navegador de otra app, instalar) */
+/* barra de avisos (navegador de otra app) */
 .barra-web { background: var(--vidriera-suave); border-bottom: 1px solid var(--linea); color: var(--tinta); font-size: 14px; }
 .barra-web.fuerte { background: #fff4e0; color: #3d2600; }
 .barra-in { max-width: 1320px; margin: 0 auto; padding: 8px 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -298,3 +298,16 @@ html.con-capa, html.con-capa body { overflow: hidden; }
   font: inherit; font-weight: 600; box-shadow: 0 6px 20px rgba(0,0,0,.25); cursor: pointer; white-space: nowrap; }
 .ir-alabanza[hidden] { display: none; }
 @media (min-width: 881px) { .ir-alabanza { display: none; } }
+
+/* logotipo (paloma) junto al nombre */
+.marca { display: inline-flex; align-items: center; gap: 10px; }
+.marca .logo { width: 30px; height: 30px; border-radius: 50%; flex: none; box-shadow: 0 0 0 1px rgba(255,255,255,.25); }
+@media (max-width: 440px) {
+  .marca { font-size: 15px; gap: 7px; white-space: nowrap; min-width: 0; }
+  .marca .logo { width: 26px; height: 26px; }
+  .cabecera .notacion button { padding: 5px 8px; font-size: 13px; }
+}
+@media (max-width: 360px) {
+  .marca { font-size: 14px; }
+  .cabecera .notacion button { padding: 5px 6px; font-size: 12px; }
+}

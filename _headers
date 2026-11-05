@@ -1,6 +1,4 @@
 /sw.js
   Cache-Control: no-cache
-/manifest.webmanifest
-  Content-Type: application/manifest+json; charset=utf-8
 /*
   X-Content-Type-Options: nosniff

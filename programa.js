@@ -1116,8 +1116,8 @@
 })();
 
 ;
-/* Versión web (PWA) del cancionero: lo que solo hace falta al abrirlo desde un enlace.
-   - Instalable y sin conexión (service worker «sw.js»).
+/* Versión web del cancionero: lo que solo hace falta al abrirlo desde un enlace, en el navegador.
+   - Sin conexión después de la primera visita (service worker «sw.js»). No se instala como app.
    - En el móvil: «Abrir cancionero» se ve dentro de la app; botones para compartir el PowerPoint y el
      cancionero; aviso cuando se abre desde el navegador interno de WhatsApp (u otra app), que no deja
      descargar archivos.
@@ -1363,23 +1363,10 @@
     return div;
   }
   if (interno) {
-    const b = barra("interno", "<span>Estás en el navegador de otra app: aquí no se puede descargar el PowerPoint ni instalar el cancionero. " +
+    const b = barra("interno", "<span>Estás en el navegador de otra app: aquí no se puede descargar el PowerPoint. " +
       (android ? "Ábrelo en Chrome." : esc(comoAbrir)) + "</span>" + abrirFueraHTML());
     if (b) b.classList.add("fuerte");
-  } else if (ios && !instalada) {
-    barra("instalar-ios", "<span>Instálalo como app (va sin conexión): Compartir → «Añadir a pantalla de inicio».</span>");
   }
-  let peticion = null;
-  window.addEventListener("beforeinstallprompt", (ev) => {
-    ev.preventDefault(); peticion = ev;
-    const b = barra("instalar", "<span>Instala el cancionero para abrirlo como una app, también sin conexión.</span>" +
-      '<button type="button" class="principal instalar">Instalar</button>');
-    if (b) b.querySelector(".instalar").addEventListener("click", async () => {
-      peticion.prompt(); const r = await peticion.userChoice; peticion = null;
-      if (r && r.outcome === "accepted") b.remove();
-    });
-  });
-  window.addEventListener("appinstalled", () => { const b = document.querySelector('.barra-web[data-clave="instalar"]'); if (b) b.remove(); });
 
   /* Crear alabanza en el móvil: la alabanza queda debajo de la lista; un botón lleva hasta ella. */
   const ir = document.createElement("button");
